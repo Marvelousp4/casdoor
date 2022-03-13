@@ -62,6 +62,16 @@ func GetPayments(owner string) []*Payment {
 	return payments
 }
 
+func GetUserPayments(owner string, organization string, user string) []*Payment {
+	payments := []*Payment{}
+	err := adapter.Engine.Desc("created_time").Find(&payments, &Payment{Owner: owner, Organization: organization, User: user})
+	if err != nil {
+		panic(err)
+	}
+
+	return payments
+}
+
 func GetPaginationPayments(owner string, offset, limit int, field, value, sortField, sortOrder string) []*Payment {
 	payments := []*Payment{}
 	session := GetSession(owner, offset, limit, field, value, sortField, sortOrder)
